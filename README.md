@@ -6,19 +6,22 @@ This chatbot answers any questions based on this [AWS Wikipedia page](https://en
 ### RAG Architecture Implementation:
 **Storage**:
 
-It ingests the data from the source and stores it in Vector Database. I have used Vector Database as **chromaDB**.
+The system ingests data from the source and stores it in a vector database. In this implementation, ChromaDB is used as the vector database.
 
-1. Load: First we need to load our data. This is done with Document Loaders. I have used AWS wikipedia page as the data.
-2. Split: Text splitters break large Documents into smaller chunks. 
-3. Store: We need somewhere to store and index our splits, so that they can be searched over later. This is often done using a VectorStore and Embeddings model.
+1. Load: The first step is loading the data using document loaders. In this case, the AWS Wikipedia page was used as the data source.
+
+2. Split: Text splitters are used to break large documents into smaller chunks.
+
+3. Store: The split data needs to be stored and indexed for later search. This is done using a vector store combined with an embeddings model.
 ![alt text](image-1.png)
 
-**Retrieval and generation**
+**Retrieval and Generation:**
 
-It Retrives the relevant context from the vectorDB and passes it to LLM
+4. The system retrieves relevant context from the vector database and passes it to the LLM (Large Language Model).
 
-4. Retrieve: Given a user input, relevant splits of the document are retrieved from VectorStore using a Retriever.
-5. Generate: A LLM produces a response using a prompt that includes both the question with the retrieved data.
+5. Retrieve: Given user input, relevant chunks of the document are retrieved from the vector store using a retriever.
+
+6. Generate: The LLM produces a response using a prompt that includes both the user's question and the retrieved data.
 ![alt text](image-2.png)
 # Set up the Environment
 
