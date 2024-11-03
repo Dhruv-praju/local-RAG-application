@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  chromadb:
+    image: chromadb/chroma
+    container_name: chromadb
+    ports:
+      - "9000:8000"
+    restart: always
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    restart: always
+    command: ["ollama", "serve"]
+
+  chatbot:
+    build:
+      context: .
+    container_name: rag_chatbot
+    depends_on:
+      - chromadb
+      - ollama
+    ports:
+      - "8080:8080"
+    volumes:
+      - /usr/app
+    command: ["python", "chat.py"]
+
+volumes:
+  ollama:
