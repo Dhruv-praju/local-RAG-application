@@ -2,10 +2,20 @@
 This project is a RAG application running with local quantized LLM called "smollm" with 135M parameters. I have use [Ollama](https://github.com/ollama/ollama) which is a platform for running and managing large language models (LLMs) on local machine. The application runs entirely on Laptop and can interact via command line.
 This chatbot answers any questions based on this [AWS Wikipedia page](https://en.wikipedia.org/wiki/Amazon_Web_Services). You can replace it with any webpage link based on which you want answers from the chatbot. 
 
-<video src="RAG_App_demo.mp4" type="video/mp4" width="800" height="800" controls>
-</video>
-
-### RAG Architecture Implementation:
+# Implementation
+![Output 1](output-1.png)
+\
+\
+\
+![Output 2](output-2.png)
+\
+\
+\
+![Output 3](output-3.png)
+\
+\
+\
+### RAG Architecture mechanism:
 **Storage**:
 
 The system ingests data from the source and stores it in a vector database. In this implementation, ChromaDB is used as the vector database.

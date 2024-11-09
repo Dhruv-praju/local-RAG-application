@@ -1,35 +1,51 @@
-version: '3.8'
-
+# docker-compose.yml for RAG Application
+version: "3"
 services:
-  chromadb:
+  chromadb: 
     image: chromadb/chroma
     container_name: chromadb
+    environment:
+      - discovery.type=single-node
     ports:
-      - "9000:8000"
-    restart: always
+      - 9000:8000
+    volumes:
+      - chromadbdata1:/usr/share/chromadb/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 10s
+      retries: 5
 
   ollama:
     image: ollama/ollama
     container_name: ollama
+    environment:
+      - discovery.type=single-node
     ports:
-      - "11434:11434"
+      - 11434:11434
     volumes:
-      - ollama:/root/.ollama
-    restart: always
-    command: ["ollama", "serve"]
+      - ollamadata1:/root/.ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434"]
+      interval: 10s
+      retries: 5
 
   chatbot:
-    build:
-      context: .
-    container_name: rag_chatbot
+    build: .
+    command:  python3 chat.py
+    environment:
+      - DEBUG=True
     depends_on:
-      - chromadb
-      - ollama
+      chromadb:
+        condition:  service_healthy
+      ollama:
+        condition:  service_healthy
     ports:
-      - "8080:8080"
+      - 8080:8080
     volumes:
       - /usr/app
-    command: ["python", "chat.py"]
 
 volumes:
-  ollama:
+  chromadbdata1:
+    driver: local
+  ollamadata1:
+    driver: local
